@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Factuur</title>
+    <style>
+      body { font-family: Arial, sans-serif; }
+      .header { text-align: center; }
+      .details { margin: 20px; }
+      .items { width: 100%; border-collapse: collapse; }
+      .items th, .items td { border: 1px solid #ddd; padding: 8px; }
+      .total { text-align: right; margin: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Factuur</h1>
+        <p>Jouw Bedrijfsnaam | KvK: 12345678 | btw: NL123456789B01</p>
+    </div>
+    <div class="details">
+        <p>Ordernummer: {{ order.name }}</p>
+        <p>Datum: {{ order.created_at }}</p>
+        {% if order.customer %}
+        <p>Klant: {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
+        <p>Email: {{ order.customer.email }}</p>
+        {% endif %}
+    </div>
+    <div class="items">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Aantal</th>
+                    <th>Prijs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.line_items %}
+                <tr>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="total">
+        <p>Totaal: €{{ order.total_price }}</p>
+    </div>
+</body>
+</html>
