@@ -15,7 +15,7 @@
 <body>
     <div class="header">
         <h1>Factuur</h1>
-        <p>Jouw Bedrijfsnaam | KvK: 12345678 | btw: NL123456789B01</p>
+        <p>Poespas</p>
     </div>
     <div class="details">
         <p>Ordernummer: {{ order.name }}</p>
@@ -46,7 +46,10 @@
         </table>
     </div>
     <div class="total">
-        <p>Totaal: €{{ order.total_price }}</p>
+        <p>Subtotaal (excl. btw): €{{ "%.2f"|format((order.total_price | float) / 1.21) }}</p>
+        <p>BTW (21%): €{{ "%.2f"|format((order.total_price | float) - (order.total_price | float) / 1.21) }}</p>
+        <p><strong>Totaal (incl. btw): €{{ order.total_price }}</strong></p>
     </div>
+    
 </body>
 </html>
