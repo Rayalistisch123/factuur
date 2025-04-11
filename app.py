@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask import Flask, request, jsonify
 from invoice_generator import generate_invoice_pdf
 from drive_uploader import upload_to_drive
@@ -25,7 +26,14 @@ def webhook():
 
         # ✅ Ga verder met factuur maken
         order_number = order_data.get('name', 'order_unknown')
-        pdf_file = f"/tmp/invoice_{order_number}.pdf"
+        first_name = order_data.get('customer', {}).get('first_name', 'klant')
+        last_name = order_data.get('customer', {}).get('last_name', '')
+        datum = datetime.now().strftime('%Y-%m-%d')
+
+        # Genereer bestandsnaam
+        safe_name = f"{first_name}_{last_name}".replace(" ", "_").lower()
+        drive_file_name = f"behang_factuur_{safe_name}_{order_number}.pdf"
+        pdf_file = f"/tmp/{drive_file_name}"
 
         try:
             generate_invoice_pdf(order_data, pdf_file)
@@ -35,7 +43,6 @@ def webhook():
             raise pdf_error
 
         try:
-            drive_file_name = f"invoice_{order_number}.pdf"
             drive_file_id = upload_to_drive(pdf_file, drive_file_name)
             print("✅ PDF succesvol geüpload naar Drive. File ID:", drive_file_id)
         except Exception as drive_error:
