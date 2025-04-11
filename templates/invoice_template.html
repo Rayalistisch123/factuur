@@ -5,7 +5,7 @@
     <title>Factuur</title>
     <style>
       body { font-family: Arial, sans-serif; }
-      .header { text-align: center; }
+      .header { text-align: right; margin-right: 50px; margin-top: 50px; }
       .details { margin: 20px; }
       .items { width: 100%; border-collapse: collapse; }
       .items th, .items td { border: 1px solid #ddd; padding: 8px; }
@@ -14,8 +14,8 @@
 </head>
 <body>
     <div class="header">
+        <img src="https://poespas.nl/cdn/shop/files/logo_poespas_2032x.webp?v=1733737422" alt="Logo Poespas" width="150">
         <h1>Factuur</h1>
-        <p>Poespas</p>
     </div>
     <div class="details">
         <p>Ordernummer: {{ order.name }}</p>
@@ -50,6 +50,8 @@
         <p>BTW (21%): €{{ "%.2f"|format((order.total_price | float) - (order.total_price | float) / 1.21) }}</p>
         <p><strong>Totaal (incl. btw): €{{ order.total_price }}</strong></p>
     </div>
+<br>
+    <p style="text-align: center; font-size: 12px;">Bedankt voor je bestelling!<br>Oldenzaalsestraat 125, 7514 DP Enschede, Nederland <br>klantenservice@poespas.nl <br>poespas.nl</p>
     
 </body>
 </html>
